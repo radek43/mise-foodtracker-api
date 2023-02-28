@@ -12,7 +12,7 @@ EXPOSE 8000
 # Install dependencies in the machine
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    /py/pip install -r /tmp/requirements.txt && \
+    /py/bin/pip install -r /tmp/requirements.txt && \
     rm -rf /tmp && \
     adduser \
         --disabled-password \
