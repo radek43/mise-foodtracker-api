@@ -20,7 +20,7 @@ RUN python -m venv /py && \
         django-user
 
 # Update path to auto run from the venv
-ENV PATH="py/bin:$PATH"
+ENV PATH="/py/bin:$PATH"
 
 # Switch to non root user
 USER django-user
