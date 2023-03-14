@@ -1,4 +1,5 @@
 """Database Models"""
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -40,3 +41,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Recipe(models.Model):
+    """Recipe object"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    title = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
+    time_minutes = models.IntegerField()
+    calories = models.DecimalField(max_digits=6, decimal_places=2)
+    protein = models.DecimalField(max_digits=6, decimal_places=2)
+    carbs = models.DecimalField(max_digits=6, decimal_places=2)
+    fibers = models.DecimalField(max_digits=6, decimal_places=2)
+    fat = models.DecimalField(max_digits=6, decimal_places=2)
+    description = models.TextField(blank=True)
+    ingredients = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title
