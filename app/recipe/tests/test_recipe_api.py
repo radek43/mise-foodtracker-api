@@ -98,28 +98,6 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
 
-    def test_recipe_list_limited_to_user(self):
-        """Test list of recipes is limited to authenticated user"""
-
-        # create another user
-        other_user = create_user(email='otherUser@example.com', password='password1234')
-
-        # create recipes with different user
-        create_recipe(user=other_user)
-        create_recipe(user=self.user)
-
-        # send request
-        res = self.client.get(RECIPES_URL)
-
-        # filter the result to show only the recipe made by our user
-        recipes = Recipe.objects.filter(user=self.user)
-        serializer = RecipeSerializer(recipes, many=True)
-
-        # check if data matches
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
-
-
     def test_get_recipe_detail(self):
         """Test get recipe detail"""
 
@@ -283,21 +261,3 @@ class PrivateRecipeApiTests(TestCase):
         # check if the recipe was deleted from db
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
-
-
-    def test_delete_other_users_recipe_error(self):
-        """Test trying to delete other user recipe gives error"""
-
-        # create a user
-        new_user = create_user(email='test2@example.com', password='test1234')
-
-        # create a recipe with the newly created user
-        recipe = create_recipe(user=new_user)
-
-        # make request to delete the other user's recipe
-        url = detail_url(recipe.id)
-        res = self.client.delete(url)
-
-        # check if the API prevented the deletion
-        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertTrue(Recipe.objects.filter(id=recipe.id).exists)

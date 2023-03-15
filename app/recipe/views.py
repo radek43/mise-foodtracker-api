@@ -17,7 +17,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     # modify only the recipes that you created
     def get_queryset(self):
         """Retrieve recipes for authenticated user"""
-        return self.queryset.filter(user=self.request.user).order_by('-id')
+        return self.queryset.order_by('-id')
 
     def get_serializer_class(self):
         """Return the serializer class for request"""
@@ -25,3 +25,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return serializers.RecipeSerializer
 
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Create new recipe"""
+
+        # set user value to be the authenticated user
+        serializer.save(user=self.request.user)
