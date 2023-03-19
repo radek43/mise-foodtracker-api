@@ -1,9 +1,10 @@
 """Views for the recipe API"""
-from rest_framework import (viewsets, mixins, status)
+from rest_framework import (viewsets, status)
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+
+from auth import custom_permissions
 
 from core.models import Recipe
 from recipe import serializers
@@ -14,9 +15,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.RecipeDetailSerializer
     queryset = Recipe.objects.all()
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [custom_permissions.UserPermission]
 
-    # modify only the recipes that you created
     def get_queryset(self):
         """Retrieve recipes for authenticated user"""
         return self.queryset.order_by('-id')
