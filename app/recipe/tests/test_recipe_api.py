@@ -27,6 +27,7 @@ def detail_url(recipe_id):
     """Create and return a recipe detail URL"""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
+
 def image_upload_url(recipe_id):
     """Create and return an image detail URL"""
     return reverse('recipe:recipe-upload-image', args=[recipe_id])
@@ -66,24 +67,20 @@ class PublicRecipeApiTests(TestCase):
         # create client
         self.client = APIClient()
 
-        def test_auth_required(self):
-            """Tests auth is required to call API"""
-            res = self.client.get(RECIPES_URL)
+    def test_auth_required(self):
+        """Tests auth is required to call API"""
+        res = self.client.get(RECIPES_URL)
 
-            self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests"""
 
+    # create and authenticate a user before each test
     def setUp(self):
-        # create client
         self.client = APIClient()
-
-        #create user
-        self.user = create_user(email='user@example.com', password='test1234')
-
-        # auth client with the created user
+        self.user = create_user(email='user@example.com', password='test1234', is_staff = True)
         self.client.force_authenticate(self.user)
 
 
@@ -256,6 +253,7 @@ class PrivateRecipeApiTests(TestCase):
         recipe.refresh_from_db()
         self.assertEqual(recipe.user, self.user)
 
+
     def test_delete_recipe(self):
         """Check if recipe delete is successful"""
 
@@ -277,17 +275,20 @@ class ImageUploadTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            'user@example.com',
-            'password123',
+            email='user@example.com',
+            password='test1234',
+            is_staff = True,
         )
 
         # authenticate with created user before every test
         self.client.force_authenticate(self.user)
         self.recipe = create_recipe(user=self.user)
 
+
     def tearDown(self):
         # delete image after every test
         self.recipe.image.delete()
+
 
     def test_upload_image(self):
         """Test uploading a image recipe"""
@@ -311,6 +312,7 @@ class ImageUploadTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn('image', res.data)
         self.assertTrue(os.path.exists(self.recipe.image.path))
+
 
     def test_upload_image_bad_request(self):
         """Test uploading an invalid image"""
