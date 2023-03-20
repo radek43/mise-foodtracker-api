@@ -44,7 +44,7 @@ class ModelTests(TestCase):
         """Test creating a superuser"""
         user = get_user_model().objects.create_superuser(
             'test@example.com',
-            'test123'
+            'test123',
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
@@ -87,3 +87,24 @@ class ModelTests(TestCase):
         # check if image is stored in expected path and
         # name matches the uuid
         self.assertEqual(file_path, f'uploads/recipe/{uuid}.jpg')
+
+
+    def test_create_food(self):
+        """Test creating food is successful"""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'test123',
+        )
+
+        food = models.Food.objects.create(
+            user=user,
+            title='Sample Food Name',
+            calories=Decimal('241.2'),
+            carbs=Decimal('36.2'),
+            fibers=Decimal('1'),
+            fat=Decimal('8.3'),
+            protein=Decimal('5.6'),
+            estimates='1buc. = 165g',
+        )
+
+        self.assertEqual(str(food), food.title)
