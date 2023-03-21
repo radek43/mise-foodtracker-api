@@ -80,7 +80,7 @@ class PrivateRecipeApiTests(TestCase):
     # create and authenticate a user before each test
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email='user@example.com', password='test1234', is_staff = True)
+        self.user = create_user(email='user@example.com', password='test1234', is_staff=True)
         self.client.force_authenticate(self.user)
 
 
