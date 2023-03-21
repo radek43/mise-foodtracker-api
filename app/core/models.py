@@ -9,6 +9,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core.validators import RegexValidator
 
 def recipe_image_file_path(instance, filename):
     """Generate filepath for new recipe image"""
@@ -48,7 +49,16 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system"""
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(
+        max_length=255,
+        validators=[
+            RegexValidator(
+                regex='^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$',
+                message='Invalid username',
+            )
+        ]
+    )
+    fullname = models.CharField(max_length=255, default='Anonim')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
