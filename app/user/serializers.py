@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
 
         # fields that are allowed by the user to change
-        fields = ['email', 'password', 'name']
+        fields = ['email', 'password', 'name', 'fullname', 'is_staff']
 
         # extra metadata to password field
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
