@@ -31,7 +31,8 @@ class PublicUserApiTests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': 'test123',
-            'name': 'Test Name',
+            'name': 'test.name',
+            'fullname': 'Test Name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -158,7 +159,8 @@ class PrivateUserApiTests(TestCase):
         self.user = create_user(
             email='test@example.com',
             password='testpass123',
-            name='Test Name',
+            name='test.name',
+            fullname='Test Name',
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
@@ -174,6 +176,8 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.data, {
             'name': self.user.name,
             'email': self.user.email,
+            'fullname': self.user.fullname,
+            'is_staff': self.user.is_staff,
         })
 
     def test_post_me_not_allowed(self):
@@ -188,7 +192,7 @@ class PrivateUserApiTests(TestCase):
 
         # updated user data
         payload = {
-            'name': 'Updated Name',
+            'name': 'updated.name',
             'password': 'newpass123',
         }
         res = self.client.patch(ME_URL, payload)
