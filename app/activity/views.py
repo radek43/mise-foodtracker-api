@@ -20,3 +20,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Retrieve activities"""
         return self.queryset.order_by('-id')
+
+    def perform_create(self, serializer):
+        """Create a new activity"""
+        serializer.save(user=self.request.user)
