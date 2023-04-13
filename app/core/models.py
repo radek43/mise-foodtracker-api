@@ -109,6 +109,9 @@ class Food(models.Model):
 
 class Activity(models.Model):
     """Activity object"""
+    class Meta:
+        verbose_name_plural = "Activities"
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
