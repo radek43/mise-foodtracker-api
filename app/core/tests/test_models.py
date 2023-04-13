@@ -108,3 +108,18 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(food), food.title)
+
+
+    def test_create_activity(self):
+        """Test creating an activity is successful"""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass123',
+        )
+        activity = models.Activity.objects.create(
+            user=user,
+            title='Alergare',
+            met=Decimal('2.3'),
+        )
+
+        self.assertEqual(str(activity), activity.title)
