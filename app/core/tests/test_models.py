@@ -123,3 +123,20 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(activity), activity.title)
+
+
+    def test_create_profile(self):
+        """Test initializing users profile is successful"""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass123',
+        )
+        profile = models.Profile.objects.create(
+            user=user,
+            calorie_goal=Decimal('2884.3'),
+            weight=Decimal('80'),
+            height=Decimal('187'),
+            gender='Masculin',
+        )
+
+        self.assertEqual(str(profile), user.name)
