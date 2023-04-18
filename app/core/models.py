@@ -67,6 +67,21 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(
+          settings.AUTH_USER_MODEL,
+          on_delete=models.CASCADE
+    )
+    calorie_goal = models.DecimalField(max_digits=6, decimal_places=1, blank=True)
+    weight = models.DecimalField(max_digits=6, decimal_places=1, blank=True)
+    height = models.DecimalField(max_digits=6, decimal_places=2, blank=True)
+    gender = models.CharField(max_length=255, blank=True)
+    # image = models.ImageField(null=True, upload_to=profile_image_file_path)
+
+    def __str__(self):
+        return self.user.name
+
+
 class Recipe(models.Model):
     """Recipe object"""
     user = models.ForeignKey(
