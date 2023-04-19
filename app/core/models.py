@@ -11,6 +11,8 @@ from django.contrib.auth.models import (
 )
 from django.core.validators import RegexValidator
 
+from decimal import Decimal
+
 def recipe_image_file_path(instance, filename):
     """Generate filepath for new recipe image"""
 
@@ -58,29 +60,39 @@ class User(AbstractBaseUser, PermissionsMixin):
             )
         ]
     )
-    fullname = models.CharField(max_length=255, default='Anonim')
+    fullname = models.CharField(
+        max_length=255,
+        default='Anonim'
+    )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    calorie_goal = models.DecimalField(
+        max_digits=6,
+        decimal_places=1,
+        blank=True,
+        default=Decimal('0.0'),
+    )
+    weight = models.DecimalField(
+        max_digits=6,
+        decimal_places=1,
+        blank=True,
+        default=Decimal('0.0'),
+    )
+    height = models.DecimalField(
+        max_digits=6,
+        decimal_places=1,
+        blank=True,
+        default=Decimal('0.0'),
+    )
+    gender = models.CharField(
+        max_length=255,
+        blank=True,
+        default='Nespecificat',
+    )
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(
-          settings.AUTH_USER_MODEL,
-          on_delete=models.CASCADE
-    )
-    calorie_goal = models.DecimalField(max_digits=6, decimal_places=1, blank=True)
-    weight = models.DecimalField(max_digits=6, decimal_places=1, blank=True)
-    height = models.DecimalField(max_digits=6, decimal_places=2, blank=True)
-    gender = models.CharField(max_length=255, blank=True)
-    # image = models.ImageField(null=True, upload_to=profile_image_file_path)
-
-    def __str__(self):
-        return self.user.name
-
 
 class Recipe(models.Model):
     """Recipe object"""
