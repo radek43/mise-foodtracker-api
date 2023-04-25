@@ -84,11 +84,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         default=Decimal('0.0'),
     )
-    gender = models.CharField(
-        max_length=255,
-        blank=True,
-        default='Nespecificat',
-    )
+    gender = models.IntegerField(default=3)
+
+    activity_factor = models.IntegerField(default=1)
+
+    dob = models.DateField(null=True)
 
     objects = UserManager()
 
