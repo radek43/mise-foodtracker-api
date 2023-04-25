@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
         # fields that are allowed by the user to change
         fields = ['email', 'password', 'name', 'fullname',
                   'is_staff', 'calorie_goal', 'weight',
-                  'height', 'gender'
+                  'height', 'gender', 'activity_factor', 'dob'
         ]
 
         # extra metadata to password field
