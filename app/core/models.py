@@ -1,6 +1,7 @@
 """Database Models"""
 import uuid
 import os
+import datetime
 
 from django.conf import settings
 from django.db import models
@@ -88,7 +89,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     activity_factor = models.IntegerField(default=1)
 
-    dob = models.DateField(null=True)
+    dob = models.DateField(default=datetime.date.today)
 
     objects = UserManager()
 
