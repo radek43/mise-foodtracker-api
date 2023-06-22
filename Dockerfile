@@ -26,6 +26,7 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/static && \
     chown -R django-user:django-user /vol && \
     chmod -R 755 /vol
+
 # Update path to auto run from the venv
 ENV PATH="/py/bin:$PATH"
 

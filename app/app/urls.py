@@ -22,7 +22,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-admin.site.site_header = 'MISE Food Tracker'
+admin.site.site_header = 'NutriGest'
 admin.site.index_title = 'Dashboard'
 
 urlpatterns = [
